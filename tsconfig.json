@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"esModuleInterop": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"outDir": "./dist",
+		"removeComments": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"strictPropertyInitialization": false,
+		"skipLibCheck": true
+	},
+	"include": ["app/**/*"],
+	"exclude": ["node_modules"]
+}
