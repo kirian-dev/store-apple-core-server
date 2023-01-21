@@ -6,17 +6,9 @@ import { Response, Request, NextFunction } from 'express';
 export class UserController {
 	public static async signup(req: Request, res: Response, next: NextFunction) {
 		try {
-			const errors = validationResult(req);
-			if (!errors.isEmpty()) {
-				return res.status(StatusCode.BAD_REQUEST).json({ errors: errors.array() });
-			}
 			const { email, password, name } = req.body;
 			const userData = await UserService.signup(email, password, name);
-			if (!userData) {
-				return res
-					.status(StatusCode.INCORRECT_BODY)
-					.json({ errors: { email: 'The email has already been taken.' } });
-			}
+
 			if (userData) {
 				res.cookie('refreshToken', userData.refreshToken, {
 					maxAge: 60 * 24 * 60 * 60 * 1000,

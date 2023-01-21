@@ -6,5 +6,7 @@ import { router as user } from './user';
 const routes = express.Router();
 
 routes.use('/api/v1', product);
-routes.use('/api/v1', user);
+routes.use('/api/v1',errorMiddleware, user);
+routes.use(errorMiddleware)
+
 export { routes };

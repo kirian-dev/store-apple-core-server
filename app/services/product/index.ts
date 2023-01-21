@@ -53,7 +53,7 @@ class ProductService {
 	public static async deleteProduct(id: string) {
 		try {
 			const deleteProduct = await Product.deleteOne({ _id: id });
-
+			
 			return deleteProduct;
 		} catch (error) {
 			console.log(error);

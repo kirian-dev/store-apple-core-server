@@ -4,17 +4,25 @@ export class ApiError extends Error {
 	status: number;
 	errors: any;
 
-	constructor(status: any, message: any, errors = []) {
+	constructor(status: any, message: any, errors = {}) {
 		super(message);
 		this.status = status;
 		this.errors = errors;
 	}
 
-	static UnauthorizedError() {
-		return new ApiError(StatusCode.NON_AUTHENTICATION, 'autrozihfg');
+	public static UnauthorizedError() {
+		return new ApiError(StatusCode.NON_AUTHENTICATION, 'Unauthorized');
 	}
 
-	static BadRequestError(message: any, errors = []) {
+	public static BadRequestError(message: any, errors = {}) {
 		return new ApiError(StatusCode.BAD_REQUEST, message, errors);
+	}
+
+	public static NotFound(message: any, errors = {}) {
+		return new ApiError(StatusCode.RESOURCE_NOT_FOUND, message, errors);
+	}
+
+	public static UnprocessableEntity(message: any, errors = {}) {
+		return new ApiError(StatusCode.INCORRECT_BODY, message, errors);
 	}
 }

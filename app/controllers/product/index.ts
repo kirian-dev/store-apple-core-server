@@ -1,10 +1,10 @@
+import { ApiError } from './../../utils/errors/api.error';
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 
 import { ProductService } from '../../services/product';
 import { StatusCode } from '../../common/enums/response.enum';
 import { IProduct } from '../../common/interfaces/product.interface';
-import { handleError } from '../../utils/errors/handlerError';
 import { ErrorProduct } from '../../common/enums/errors.enum';
 import { getMissingFields } from '../../utils/validateMissingFields';
 import { requiredFields } from '../../common/constants/validate.constants';
@@ -15,29 +15,24 @@ export class ProductsController {
 
 			return res.status(StatusCode.OK).json({ data: products });
 		} catch (error) {
-			return handleError(error, req, res, next);
+			next(error);
 		}
 	}
-
 	public static async getProductsByCategory(req: Request, res: Response, next: NextFunction) {
 		try {
 			const category = req.params.category;
 			if (!category) {
-				return res.status(StatusCode.BAD_REQUEST).json({
-					message: ErrorProduct.INVALID_CATEGORY,
-				});
+				throw ApiError.BadRequestError(ErrorProduct.INVALID_CATEGORY);
 			}
 
 			const products = await ProductService.getProductsByCategory(category);
 			if (!products) {
-				return res.status(StatusCode.RESOURCE_NOT_FOUND).json({
-					message: ErrorProduct.CATEGORY_NOT_FOUND,
-				});
+				throw ApiError.NotFound(ErrorProduct.CATEGORY_NOT_FOUND);
 			}
 
 			return res.status(StatusCode.OK).json({ data: products });
 		} catch (error) {
-			return handleError(error, req, res, next);
+			next(error);
 		}
 	}
 
@@ -46,18 +41,18 @@ export class ProductsController {
 			const id = req.params.id;
 
 			if (!id) {
-				throw new createHttpError.BadRequest(ErrorProduct.INVALID_ID);
+				throw ApiError.BadRequestError(ErrorProduct.INVALID_ID);
 			}
 
 			const product = await ProductService.getProductById(id);
 
 			if (!product) {
-				throw new createHttpError.NotFound(ErrorProduct.PRODUCT_NOT_FOUND);
+				throw ApiError.NotFound(ErrorProduct.PRODUCT_NOT_FOUND);
 			}
 
 			return res.status(StatusCode.OK).json({ data: product });
 		} catch (error) {
-			return handleError(error, req, res, next);
+			next(error);
 		}
 	}
 
@@ -66,9 +61,7 @@ export class ProductsController {
 			const body: IProduct = req.body;
 
 			if (!body) {
-				return res.status(StatusCode.BAD_REQUEST).json({
-					message: ErrorProduct.PRODUCT_NO_FOUND_DATA,
-				});
+				throw ApiError.BadRequestError(ErrorProduct.PRODUCT_NO_FOUND_DATA);
 			}
 
 			const missingFields = getMissingFields(body, requiredFields.product);
@@ -78,14 +71,13 @@ export class ProductsController {
 				for (const field of missingFields) {
 					errors[field] = `${field} is required.`;
 				}
-				return res.status(StatusCode.INCORRECT_BODY).json({
-					errors: errors,
-				});
+				throw ApiError.UnprocessableEntity(ErrorProduct.PRODUCTS_FIELDS_MESSAGE, errors);
 			}
+
 			const newProduct = await ProductService.createProduct(body);
 			return res.status(StatusCode.CREATED).json({ data: newProduct });
 		} catch (error) {
-			return handleError(error, req, res, next);
+			next(error);
 		}
 	}
 
@@ -93,10 +85,13 @@ export class ProductsController {
 		try {
 			const body: IProduct = req.body;
 			const id: string = req.params.id;
+			
 			if (!body) {
-				return res.status(StatusCode.INCORRECT_BODY).json({
-					message: ErrorProduct.PRODUCT_NO_FOUND_DATA,
-				});
+				throw ApiError.BadRequestError(ErrorProduct.PRODUCT_NO_FOUND_DATA);
+			}
+
+			if (!id) {
+				throw ApiError.BadRequestError(ErrorProduct.INVALID_ID);
 			}
 
 			const missingFields = getMissingFields(body, requiredFields.product);
@@ -105,14 +100,13 @@ export class ProductsController {
 				for (const field of missingFields) {
 					errors[field] = `${field} is required.`;
 				}
-				return res.status(StatusCode.INCORRECT_BODY).json({
-					errors: errors,
-				});
+				throw ApiError.UnprocessableEntity(ErrorProduct.PRODUCTS_FIELDS_MESSAGE, errors);
 			}
+
 			const newProduct = await ProductService.updateProduct(body, id);
 			return res.status(StatusCode.OK).json({ data: newProduct });
 		} catch (error) {
-			return handleError(error, req, res, next);
+			next(error);
 		}
 	}
 
@@ -121,9 +115,7 @@ export class ProductsController {
 			const id: string = req.params.id;
 
 			if (!id) {
-				return res.status(StatusCode.BAD_REQUEST).json({
-					message: ErrorProduct.INVALID_ID,
-				});
+				throw ApiError.BadRequestError(ErrorProduct.INVALID_ID);
 			}
 
 			await ProductService.deleteProduct(id);
@@ -131,7 +123,7 @@ export class ProductsController {
 				message: [],
 			});
 		} catch (error) {
-			return handleError(error, req, res, next);
+			next(error);
 		}
 	}
 }

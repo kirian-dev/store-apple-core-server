@@ -19,6 +19,5 @@ app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json({ limit: '10kb' }));
 app.use(routes);
-routes.use(errorMiddleware)
 
 export { app };
