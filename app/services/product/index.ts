@@ -1,5 +1,7 @@
+import { ErrorProduct } from '../../common/enums/errors.enum';
 import { IProduct } from '../../common/interfaces/product.interface';
 import { Product } from '../../models/products';
+import { ApiError } from '../../utils/errors/api.error';
 
 class ProductService {
 	public static async getProducts(): Promise<IProduct[] | undefined> {
@@ -23,7 +25,7 @@ class ProductService {
 
 	public static async getProductById(id: string): Promise<IProduct | null> {
 		try {
-			const product = await Product.findById(id);
+			const product = await Product.findById({ _id: id });
 			return product;
 		} catch (error) {
 			console.error(error);
@@ -43,6 +45,10 @@ class ProductService {
 	public static async updateProduct(body: IProduct, id: string): Promise<IProduct | null> {
 		try {
 			const updatedProduct = await Product.findByIdAndUpdate(id, body, { new: true });
+
+			if (!updatedProduct) {
+				throw ApiError.BadRequestError(ErrorProduct.PRODUCT_NOT_FOUND);
+			}
 			return updatedProduct;
 		} catch (error) {
 			console.error(error);
@@ -50,11 +56,15 @@ class ProductService {
 		}
 	}
 
-	public static async deleteProduct(id: string) {
+	public static async deleteProduct(id: string): Promise<null | undefined> {
 		try {
-			const deleteProduct = await Product.deleteOne({ _id: id });
-			
-			return deleteProduct;
+			const deletedProduct = await Product.deleteOne({ _id: id });
+
+			if (!deletedProduct) {
+				throw ApiError.BadRequestError(ErrorProduct.PRODUCT_NOT_FOUND);
+			}
+
+			return null;
 		} catch (error) {
 			console.log(error);
 		}

@@ -10,7 +10,10 @@ const productFields = [
 
 const userFields = ['name', 'email', 'password'];
 
+const orderFields = ['user', 'orderItems', 'totalPrice', 'isPaid'];
+
 export const requiredFields = {
 	product: productFields,
 	user: userFields,
+	order: orderFields,
 };

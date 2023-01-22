@@ -103,8 +103,8 @@ export class ProductsController {
 				throw ApiError.UnprocessableEntity(ErrorProduct.PRODUCTS_FIELDS_MESSAGE, errors);
 			}
 
-			const newProduct = await ProductService.updateProduct(body, id);
-			return res.status(StatusCode.OK).json({ data: newProduct });
+			const updatedProduct = await ProductService.updateProduct(body, id);
+			return res.status(StatusCode.OK).json({ data: updatedProduct });
 		} catch (error) {
 			next(error);
 		}

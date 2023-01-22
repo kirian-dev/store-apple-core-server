@@ -21,3 +21,9 @@ export enum ErrorProduct {
 	PRODUCT_NO_FOUND_DATA = 'No product data found in request body',
 	PRODUCTS_FIELDS_MESSAGE = 'All required fields must be filled',
 }
+
+export enum ErrorOrder {
+	ORDER_NOT_FOUND = 'Order not found',
+	ORDER_DATA_NOT_FOUND = 'Order data not found',
+	ORDER_FIELDS_MESSAGE = 'All required fields must be filled',
+}

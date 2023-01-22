@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { check, validationResult } from 'express-validator';
+import { ValidationChain, check, validationResult } from 'express-validator';
 import { ErrorUser } from '../common/enums/errors.enum';
 import { ApiError } from '../utils/errors/api.error';
 
@@ -31,5 +31,21 @@ export const validateLogin = [
 			return next(ApiError.UnprocessableEntity(ErrorUser.USER_FIELDS_MESSAGE, errors.mapped()));
 		}
 		return next();
+	},
+];
+
+export const validateOrder = [
+	check('user').isString().withMessage('Invalid user id'),
+	check('orderItems').isArray().withMessage('Order items must be an array'),
+	check('orderItems.*.product').isMongoId().withMessage('Invalid product id'),
+	check('orderItems.*.qty').isNumeric().withMessage('Quantity must be a number'),
+	check('totalPrice').isNumeric().withMessage('Total price must be a number'),
+	check('isPaid').isBoolean().withMessage('Is paid must be a boolean'),
+	(req: Request, res: Response, next: NextFunction) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() });
+		}
+		next();
 	},
 ];
