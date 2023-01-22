@@ -9,7 +9,7 @@ const routes = express.Router();
 
 routes.use('/api/v1', product);
 routes.use('/api/v1',errorMiddleware, user);
-router.use('/api/v1', order)
+routes.use('/api/v1', order)
 routes.use(errorMiddleware)
 
 export { routes };

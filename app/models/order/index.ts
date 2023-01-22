@@ -31,7 +31,6 @@ const orderSchema = new mongoose.Schema<IOrder>(
 		],
 		paymentMethod: {
 			type: String,
-			required: true,
 		},
 		paymentResult: {
 			id: {
