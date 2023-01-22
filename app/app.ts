@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import { connectDB } from './config/db';
 import { routes } from './routes';
-import { errorMiddleware } from './middlewares/error.middleware';
+import { errorMiddleware } from './middleware/error.middleware';
 
 dotenv.config();
 

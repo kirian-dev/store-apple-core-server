@@ -66,7 +66,7 @@ export class ProductsController {
 
 			const missingFields = getMissingFields(body, requiredFields.product);
 
-			if (missingFields.size > 0) {
+			if (missingFields.length > 0) {
 				let errors: { [key: string]: string } = {};
 				for (const field of missingFields) {
 					errors[field] = `${field} is required.`;
@@ -95,7 +95,7 @@ export class ProductsController {
 			}
 
 			const missingFields = getMissingFields(body, requiredFields.product);
-			if (missingFields.size > 0) {
+			if (missingFields.length > 0) {
 				let errors: { [key: string]: string } = {};
 				for (const field of missingFields) {
 					errors[field] = `${field} is required.`;

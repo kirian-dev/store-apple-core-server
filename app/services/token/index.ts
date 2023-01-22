@@ -1,6 +1,8 @@
+import { IUser } from './../../common/interfaces/user.interface';
 import jwt from 'jsonwebtoken';
 import { Token } from '../../models';
 import dotenv from 'dotenv';
+import { ApiError } from '../../utils/errors/api.error';
 
 dotenv.config();
 
@@ -41,6 +43,54 @@ export class TokenService {
 			return token;
 		} catch (err) {
 			console.log(err);
+		}
+	}
+
+	public static async removeToken(refreshToken: string) {
+		try {
+			const token = await Token.deleteOne({ refreshToken });
+
+			return token;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	public static async findRefreshToken(refreshToken: string): Promise<string | null | undefined> {
+		try {
+			const tokenData: string | null = await Token.findOne({ refreshToken });
+
+			return tokenData;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	public static async validateAccessToken(accessToken: string): Promise<IUser | null | undefined> {
+		try {
+			if (process.env.JWT_ACCESS_KEY_SECRET) {
+				const secretKey = process.env.JWT_ACCESS_KEY_SECRET;
+				const payload = jwt.verify(accessToken, secretKey) as jwt.JwtPayload;
+				const { _id } = payload;
+				
+				return _id;
+			}
+		} catch (err) {
+			return null;
+		}
+	}
+
+	public static async validateRefreshToken(refreshToken: string): Promise<string | null | undefined> {
+		try {
+			if (process.env.JWT_REFRESH_KEY_SECRET) {
+				const secretKey = process.env.JWT_REFRESH_KEY_SECRET;
+				const payload = jwt.verify(refreshToken, secretKey) as jwt.JwtPayload;
+				const { _id } = payload;
+				
+				return _id;
+			}
+		} catch (err) {
+			return null;
 		}
 	}
 }

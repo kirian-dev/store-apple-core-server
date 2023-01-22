@@ -1,6 +1,3 @@
-export const getMissingFields = (body: any, requiredFields: any) => {
-	const missingFields = new Set(
-		[...requiredFields].filter((field) => !Object.keys(body).includes(field)),
-	);
-	return missingFields;
+export const getMissingFields = (body: any, requiredFields: string[]) => {
+	return requiredFields.filter((field) => !Object.keys(body).includes(field) || body[field] === '');
 };

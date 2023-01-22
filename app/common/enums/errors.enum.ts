@@ -1,7 +1,16 @@
-export enum ErrorLogin {
+export enum ErrorUser {
 	UNAUTHORIZED = 'Unauthorized',
 	FORBIDDEN = 'Forbidden',
-	USER_EXISTS = 'The email has already been taken.'
+	USER_EXISTS = 'The email has already been taken.',
+	USER_FIELDS_MESSAGE = 'Please fill all required fields',
+	INVALID_EMAIL_ADDRESS = 'Invalid email address',
+	PASSWORD_LENGTH = 'Password must be at least 6 and not more than 32 characters',
+	NAME_LENGTH = 'Name must be less than 32 characters',
+	NAME_REQUIRED = 'Name is required',
+	EMAIL_REQUIRED = 'Email is required',
+	PASSWORD_REQUIRED = 'Password is required',
+	USER_NOT_FOUND = 'User is not found',
+	PASSWORDS_NOT_EQUAL = 'The provided credentials are incorrect.',
 }
 
 export enum ErrorProduct {

@@ -1,23 +1,25 @@
 import mongoose, { InferSchemaType } from 'mongoose';
 import { IUser } from './../../common/interfaces/user.interface';
 
-const userSchema = new mongoose.Schema<IUser>({
-	name: {
-		type: 'string',
-		required: true,
+const userSchema = new mongoose.Schema<IUser>(
+	{
+		name: {
+			type: 'string',
+			required: true,
+		},
+		email: {
+			type: 'string',
+			required: true,
+			unique: true,
+		},
+		password: {
+			type: 'string',
+			required: true,
+		},
+		role: '',
 	},
-	email: {
-		type: 'string',
-		required: true,
-		select: false,
-	},
-	password: {
-		type: 'string',
-		required: true,
-		select: false,
-	},
-	role: '',
-});
+	{ timestamps: true },
+);
 
 type UserType = InferSchemaType<typeof userSchema>;
 

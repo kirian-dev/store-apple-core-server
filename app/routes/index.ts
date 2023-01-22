@@ -1,4 +1,4 @@
-import { errorMiddleware } from './../middlewares/error.middleware';
+import { errorMiddleware } from '../middleware/error.middleware';
 import express from 'express';
 
 import { router as product } from './product';

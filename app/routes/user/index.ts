@@ -1,14 +1,15 @@
 import express from 'express';
 import { UserController } from '../../controllers';
-import { validateSignup } from '../../middlewares/validator.middleware';
+import { validateSignup, validateLogin } from '../../middleware/validator.middleware';
+import { authMiddleware } from '../../middleware/auth.middleware';
 
 const router = express.Router();
 
-router.get('/users', UserController.getUsers);
-router.get('/users:id', UserController.getUsersById);
-router.post('/login', UserController.login);
-router.post('/signup',validateSignup, UserController.signup);
+router.get('/users', authMiddleware, UserController.getUsers);
+router.get('/users/:id', authMiddleware, UserController.getUserById);
+router.post('/login', validateLogin, UserController.login);
+router.post('/signup', validateSignup, UserController.signup);
 router.post('/logout', UserController.logout);
-router.post('/refresh', UserController.refresh);
+router.get('/refresh', UserController.refresh);
 
 export { router };

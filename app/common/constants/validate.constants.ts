@@ -1,4 +1,4 @@
-const productFields = new Set([
+const productFields = [
 	'name',
 	'image',
 	'productName',
@@ -6,9 +6,9 @@ const productFields = new Set([
 	'category',
 	'model',
 	'characteristics',
-]);
+];
 
-const userFields = new Set(['name', 'email', 'password']);
+const userFields = ['name', 'email', 'password'];
 
 export const requiredFields = {
 	product: productFields,
