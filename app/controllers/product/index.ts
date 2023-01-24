@@ -13,7 +13,7 @@ export class ProductsController {
 		try {
 			const products = await ProductService.getProducts();
 
-			return res.status(StatusCode.OK).json({ data: products });
+			return res.status(StatusCode.OK).json({ products });
 		} catch (error) {
 			next(error);
 		}
@@ -30,7 +30,7 @@ export class ProductsController {
 				throw ApiError.NotFound(ErrorProduct.CATEGORY_NOT_FOUND);
 			}
 
-			return res.status(StatusCode.OK).json({ data: products });
+			return res.status(StatusCode.OK).json({ products });
 		} catch (error) {
 			next(error);
 		}
@@ -50,7 +50,7 @@ export class ProductsController {
 				throw ApiError.NotFound(ErrorProduct.PRODUCT_NOT_FOUND);
 			}
 
-			return res.status(StatusCode.OK).json({ data: product });
+			return res.status(StatusCode.OK).json({ product });
 		} catch (error) {
 			next(error);
 		}
@@ -75,7 +75,7 @@ export class ProductsController {
 			}
 
 			const newProduct = await ProductService.createProduct(body);
-			return res.status(StatusCode.CREATED).json({ data: newProduct });
+			return res.status(StatusCode.CREATED).json({ newProduct });
 		} catch (error) {
 			next(error);
 		}
@@ -85,7 +85,7 @@ export class ProductsController {
 		try {
 			const body: IProduct = req.body;
 			const id: string = req.params.id;
-			
+
 			if (!body) {
 				throw ApiError.BadRequestError(ErrorProduct.PRODUCT_NO_FOUND_DATA);
 			}
@@ -104,7 +104,7 @@ export class ProductsController {
 			}
 
 			const updatedProduct = await ProductService.updateProduct(body, id);
-			return res.status(StatusCode.OK).json({ data: updatedProduct });
+			return res.status(StatusCode.OK).json({ updatedProduct });
 		} catch (error) {
 			next(error);
 		}

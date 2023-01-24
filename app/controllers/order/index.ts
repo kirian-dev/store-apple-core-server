@@ -12,7 +12,7 @@ export class OrderController {
 		try {
 			const orders = await OrderService.getOrders();
 
-			return res.status(StatusCode.OK).json({ data: orders });
+			return res.status(StatusCode.OK).json({ orders });
 		} catch (err) {
 			next(err);
 		}
@@ -50,7 +50,7 @@ export class OrderController {
 			}
 
 			const newOrder = await OrderService.createOrder(body);
-			return res.status(StatusCode.CREATED).json({ data: newOrder });
+			return res.status(StatusCode.CREATED).json({ newOrder });
 		} catch (err) {
 			next(err);
 		}
@@ -78,7 +78,7 @@ export class OrderController {
 			}
 
 			const updatedOrder = await OrderService.updateOrder(id, body);
-			return res.status(StatusCode.OK).json({ data: updatedOrder });
+			return res.status(StatusCode.OK).json({ updatedOrder });
 		} catch (err) {
 			next(err);
 		}
@@ -99,7 +99,5 @@ export class OrderController {
 			next(error);
 		}
 	}
-	public static async paymentOrder(req: Request, res: Response, next: NextFunction) {
-		
-	}
+	public static async paymentOrder(req: Request, res: Response, next: NextFunction) {}
 }
